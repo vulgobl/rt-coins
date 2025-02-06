@@ -19,7 +19,7 @@
             color: #fff;
         }
         .container {
-            background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transpar?ncia */
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
             padding: 30px;
             border-radius: 15px;
             text-align: center;
@@ -29,7 +29,7 @@
         h1 {
             font-size: 28px;
             margin-bottom: 20px;
-            color: #800080; /* Roxo para o t?tulo */
+            color: #800080; /* Roxo para o título */
         }
         .input-group {
             margin-bottom: 20px;
@@ -63,13 +63,13 @@
         }
         .summary .label {
             font-weight: bold;
-            color: #800080; /* Roxo para os r?tulos */
+            color: #800080; /* Roxo para os rótulos */
         }
         button {
             width: 100%;
             padding: 15px;
             font-size: 18px;
-            background-color: #800080; /* Roxo para o bot?o */
+            background-color: #800080; /* Roxo para o botão */
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -105,7 +105,7 @@
         // Valor por RTCOIN
         const valorPorRTCOIN = 0.00072; // R$ 3,60 para 5.000 RTCOINS
 
-        // Fun??o para calcular o valor com base na quantidade de RTCOINS
+        // Função para calcular o valor com base na quantidade de RTCOINS
         function calcularValor() {
             const rtcoins = document.getElementById('rtcoins').value;
             const valorTotal = (rtcoins * valorPorRTCOIN).toFixed(2);
@@ -117,34 +117,34 @@
         document.getElementById('rtcoins').addEventListener('input', function () {
             let rtcoins = this.value;
             if (rtcoins < 5000) {
-                rtcoins = 5000; // Define o valor m?nimo como 5000
+                rtcoins = 5000; // Define o valor mínimo como 5000
                 this.value = rtcoins; // Atualiza o campo de entrada
             }
             calcularValor(); // Atualiza o valor exibido
         });
 
-        // Fun??o para garantir que o valor seja m?ltiplo de 50
+        // Função para garantir que o valor seja múltiplo de 50
         document.getElementById('rtcoins').addEventListener('change', function () {
             let rtcoins = this.value;
             if (rtcoins < 5000) {
-                rtcoins = 5000; // Define o valor m?nimo como 5000
+                rtcoins = 5000; // Define o valor mínimo como 5000
             }
-            // Arredonda para o m?ltiplo de 50 mais pr?ximo
+            // Arredonda para o múltiplo de 50 mais próximo
             rtcoins = Math.round(rtcoins / 50) * 50;
             this.value = rtcoins;
             calcularValor(); // Atualiza o valor exibido
         });
 
-        // Fun??o para redirecionar ao clicar no bot?o
+        // Função para redirecionar ao clicar no botão
         function redirecionar() {
             const rtcoins = document.getElementById('rtcoins').value;
             const valorTotal = (rtcoins * valorPorRTCOIN).toFixed(2);
-            alert(`Voc? ser? redirecionado para comprar ${rtcoins} RTCOINS por R$ ${valorTotal.replace('.', ',')}`);
+            alert(`Você será redirecionado para comprar ${rtcoins} RTCOINS por R$ ${valorTotal.replace('.', ',')}`);
             // Substitua o link abaixo pelo link de redirecionamento desejado
             window.location.href = "https://seusite.com/comprar";
         }
 
-        // Calcular o valor inicial ao carregar a p?gina
+        // Calcular o valor inicial ao carregar a página
         calcularValor();
     </script>
 </body>
