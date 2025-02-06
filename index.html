@@ -19,7 +19,7 @@
             color: #fff;
         }
         .container {
-            background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 30px;
             border-radius: 15px;
             text-align: center;
@@ -29,7 +29,7 @@
         h1 {
             font-size: 28px;
             margin-bottom: 20px;
-            color: #800080; /* Roxo para o título */
+            color: #800080; /* Roxo */
         }
         .input-group {
             margin-bottom: 20px;
@@ -63,13 +63,13 @@
         }
         .summary .label {
             font-weight: bold;
-            color: #800080; /* Roxo para os rótulos */
+            color: #800080; /* Roxo */
         }
         button {
             width: 100%;
             padding: 15px;
             font-size: 18px;
-            background-color: #800080; /* Roxo para o botão */
+            background-color: #800080; /* Roxo */
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -77,7 +77,59 @@
             transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #660066; /* Roxo mais escuro no hover */
+            background-color: #6a006a; /* Roxo mais escuro */
+        }
+        
+        /* Estilo do modal (janela do ticket) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        .modal-content h2 {
+            color: #800080; /* Roxo */
+        }
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-close, .btn-discord {
+            background-color: #800080; /* Roxo */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 48%;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-close:hover, .btn-discord:hover {
+            background-color: #6a006a;
         }
     </style>
 </head>
@@ -98,14 +150,27 @@
                 <span id="total">R$ 3,60</span>
             </div>
         </div>
-        <button onclick="redirecionar()">PAGAR</button>
+        <button onclick="abrirTicket()">PAGAR</button>
+    </div>
+
+    <!-- Modal do ticket -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>🎟️ Ticket de Compra</h2>
+            <p><strong>RTCOINS:</strong> <span id="ticket-rtcoins"></span></p>
+            <p><strong>Total:</strong> R$ <span id="ticket-total"></span></p>
+            <p>📸 Tire uma captura de tela deste ticket.</p>
+            <p>📩 Abra um ticket e envie a imagem para confirmar sua compra.</p>
+            <div class="btn-container">
+                <a href="https://discord.gg/XByMFvvXTd" class="btn-discord" target="_blank">Abrir Ticket</a>
+                <button class="btn-close" onclick="fecharModal()">Fechar</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Valor por RTCOIN
-        const valorPorRTCOIN = 0.00072; // R$ 3,60 para 5.000 RTCOINS
+        const valorPorRTCOIN = 0.00072;
 
-        // Função para calcular o valor com base na quantidade de RTCOINS
         function calcularValor() {
             const rtcoins = document.getElementById('rtcoins').value;
             const valorTotal = (rtcoins * valorPorRTCOIN).toFixed(2);
@@ -113,38 +178,39 @@
             document.getElementById('total').textContent = `R$ ${valorTotal.replace('.', ',')}`;
         }
 
-        // Atualizar o valor quando o input mudar
         document.getElementById('rtcoins').addEventListener('input', function () {
             let rtcoins = this.value;
             if (rtcoins < 5000) {
-                rtcoins = 5000; // Define o valor mínimo como 5000
-                this.value = rtcoins; // Atualiza o campo de entrada
+                rtcoins = 5000;
+                this.value = rtcoins;
             }
-            calcularValor(); // Atualiza o valor exibido
+            calcularValor();
         });
 
-        // Função para garantir que o valor seja múltiplo de 50
         document.getElementById('rtcoins').addEventListener('change', function () {
             let rtcoins = this.value;
             if (rtcoins < 5000) {
-                rtcoins = 5000; // Define o valor mínimo como 5000
+                rtcoins = 5000;
             }
-            // Arredonda para o múltiplo de 50 mais próximo
             rtcoins = Math.round(rtcoins / 50) * 50;
             this.value = rtcoins;
-            calcularValor(); // Atualiza o valor exibido
+            calcularValor();
         });
 
-        // Função para redirecionar ao clicar no botão
-        function redirecionar() {
+        function abrirTicket() {
             const rtcoins = document.getElementById('rtcoins').value;
             const valorTotal = (rtcoins * valorPorRTCOIN).toFixed(2);
-            alert(`Você será redirecionado para comprar ${rtcoins} RTCOINS por R$ ${valorTotal.replace('.', ',')}`);
-            // Substitua o link abaixo pelo link de redirecionamento desejado
-            window.location.href = "https://seusite.com/comprar";
+            
+            document.getElementById('ticket-rtcoins').textContent = rtcoins;
+            document.getElementById('ticket-total').textContent = valorTotal.replace('.', ',');
+
+            document.getElementById('modal').style.display = "flex";
         }
 
-        // Calcular o valor inicial ao carregar a página
+        function fecharModal() {
+            document.getElementById('modal').style.display = "none";
+        }
+
         calcularValor();
     </script>
 </body>
